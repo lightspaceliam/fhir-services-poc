@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="C:\Users\LiamHandasyde\.nuget\packages\hl7.fhir.specification.r4\4.2.0\contentFiles\any\any\specification.zip" />
+  </ItemGroup>
+
+  <ItemGroup>
+	  <PackageReference Include="Hl7.Fhir.R4" Version="4.2.0" />
+	  <PackageReference Include="Hl7.Fhir.Serialization" Version="4.2.0" />
+	  <PackageReference Include="Hl7.Fhir.Specification.R4" Version="4.2.0" />
+        <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+	  <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0"></PackageReference>
+  </ItemGroup>
+
+</Project>
