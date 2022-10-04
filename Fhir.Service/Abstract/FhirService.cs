@@ -9,16 +9,16 @@ namespace Fhir.Service.Abstract
         where T : class, IModifierExtendable
         where R : Resource
     {
-        private FhirHttpClient _hirHttpClient;
+        private FhirHttpClient _fhirHttpClient;
         private readonly FhirClient _fhirClient;
-
+        protected string Resource { get; set; }
         protected readonly ILogger<FhirService<T, R>> Logger;
 
         protected FhirService(
             FhirHttpClient fhirHttpClient,
             ILogger<FhirService<T, R>> logger)
         {
-            _hirHttpClient = fhirHttpClient;
+            _fhirHttpClient = fhirHttpClient;
             Logger = logger;
 
             _fhirClient = new FhirClient(fhirHttpClient.Client.BaseAddress, fhirHttpClient.Client, null, null);
@@ -26,11 +26,12 @@ namespace Fhir.Service.Abstract
 
         public async virtual Task<string> GetContentAsync(string uri)
         {
-            using (var httpResponseMessage = await _hirHttpClient.Client.GetAsync(uri))
+            using (var httpResponseMessage = await _fhirHttpClient.Client.GetAsync($"{Resource}?{uri}"))
             {
                 if (!httpResponseMessage.IsSuccessStatusCode)
                 {
-                    Logger.LogError($"Request: {uri} failed. Http status code: {httpResponseMessage.StatusCode}.");
+                    var url = $"{_fhirHttpClient.Client.BaseAddress}{uri}";
+                    Logger.LogError($"Request: {url} failed. Http status code: {httpResponseMessage.StatusCode}.");
                     throw new Exception(httpResponseMessage.StatusCode.ToString());
                 }
 

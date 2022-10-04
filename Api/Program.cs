@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Text.Json.Serialization;
+using System.Net.Http.Headers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +46,7 @@ builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
 builder.Services.AddHttpClient<FhirHttpClient>(httpClient =>
 {
     httpClient.BaseAddress = new Uri(builder.Configuration["Fhir:BaseUrl"]);
+    httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/fhir+json"));
 }).SetHandlerLifetime(TimeSpan.FromMinutes(5));
 
 builder.Services.AddTransient<IFhirService<Hl7.Fhir.Model.Patient, Hl7.Fhir.Model.Patient>, PatientService>();

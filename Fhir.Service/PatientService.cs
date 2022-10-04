@@ -10,6 +10,8 @@ namespace Fhir.Service
             FhirHttpClient fhirHttpClient,
             ILogger<FhirService<Patient, Patient>> logger)
             : base(fhirHttpClient, logger) 
-        { }
+        {
+            Resource = "Patient";
+        }
     }
 }

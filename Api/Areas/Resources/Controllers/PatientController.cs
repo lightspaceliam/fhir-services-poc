@@ -16,11 +16,11 @@ namespace Api.Areas.Resources.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<PaginatedFhirResponse<Hl7.Fhir.Model.Patient>>> Index(int page = 1, int count = 20)
+        public async Task<ActionResult<PaginatedFhirResponse<Hl7.Fhir.Model.Patient>>> Index(int count = 20, int offset = 0)
         {
             try
             {
-                var (patients, totalRecords, lastUpdated) = await _service.GetPaginatedRequestAsync($"Patient?_page={page}&_count={count}");
+                var (patients, totalRecords, lastUpdated) = await _service.GetPaginatedRequestAsync($"_sort=family&_count={count}&_offset={offset}");
 
                 return Ok(new PaginatedFhirResponse<Hl7.Fhir.Model.Patient>
                 {
