@@ -7,6 +7,9 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Net.Http.Headers;
+using Microsoft.Net.Http.Headers;
+using Polly;
+using Hl7.Fhir.Model;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,13 +46,16 @@ builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
 /*
  * Named HTTP Client/s
  */
-builder.Services.AddHttpClient<FhirHttpClient>(httpClient =>
+builder.Services.AddHttpClient("FhirService", httpClient =>
 {
-    httpClient.BaseAddress = new Uri(builder.Configuration["Fhir:BaseUrl"]);
-    httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/fhir+json"));
-}).SetHandlerLifetime(TimeSpan.FromMinutes(5));
+    httpClient.BaseAddress = new Uri(builder.Configuration["FhirSettings:RealBaseUrl"]);
+    httpClient.DefaultRequestHeaders.Clear();
+    httpClient.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
+})
+    .SetHandlerLifetime(TimeSpan.FromMinutes(5))
+    .AddPolicyHandler(Policy.HandleResult<HttpResponseMessage>(p => !p.IsSuccessStatusCode).RetryAsync(3));
 
-builder.Services.AddTransient<IFhirService<Hl7.Fhir.Model.Patient, Hl7.Fhir.Model.Patient>, PatientService>();
+builder.Services.AddTransient<IFhirResourceService<Patient>, PatientService>();
 
 /*
  * Authentication.
