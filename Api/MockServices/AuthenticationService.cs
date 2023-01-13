@@ -5,10 +5,16 @@ namespace Api.MockServices
 {
     public class AuthenticationService : IAuthenticationService
     {
-        private readonly List<Provider> _providers = new List<Provider>
+        //  Mock user collection.
+        private readonly List<HealthcareProvider> _healthcareProviders = new List<HealthcareProvider>
         {
-            new Provider{ 
-                Id = Guid.Parse("5D494E5F-C0D7-414E-86CB-920FE84D27BC"), Email = "doogie@rmh.com.au", Password = "Password", FirstName = "Doogie", LastName = "Howser"
+            new HealthcareProvider
+            { 
+                Id = Guid.Parse("5D494E5F-C0D7-414E-86CB-920FE84D27BC"), 
+                Email = "doogie@rmh.com.au", 
+                Password = "Password", 
+                FirstName = "Doogie", 
+                LastName = "Howser"
             }
         };
 
@@ -25,14 +31,14 @@ namespace Api.MockServices
         /// <param name="email"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public Provider? FindProvider(string email)
+        public HealthcareProvider? FindProvider(string email)
         {
-            var provider = _providers
+            var provider = _healthcareProviders
                 .FirstOrDefault(p => p.Email == email);
 
             if(provider == null)
             {
-                _logger.LogInformation($"Provider not found with email: {email}.");
+                _logger.LogInformation($"Healcare Provider not found with email: {email}.");
             }
 
             return provider;

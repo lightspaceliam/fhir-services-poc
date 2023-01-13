@@ -6,7 +6,7 @@ namespace Api.MockServices.Abstract
     {
         public interface IAuthenticationService
         {
-            Provider? FindProvider(string email);
+            HealthcareProvider? FindProvider(string email);
         }
     }
 }

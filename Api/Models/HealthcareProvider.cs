@@ -2,7 +2,7 @@
 
 namespace Api.Models
 {
-    public class Provider
+    public class HealthcareProvider
     {
         public Guid Id { get; set; }
 
